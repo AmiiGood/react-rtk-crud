@@ -30,8 +30,24 @@ export const taskSlice = createSlice({
     addTask: (state, action) => {
       state.push(action.payload);
     },
+    deleteTask: (state, action) => {
+      const taskFound = state.find((task) => task.id === action.payload);
+      if (taskFound) {
+        state.splice(state.indexOf(taskFound), 1);
+      }
+    },
+    editTask: (state, action) => {
+      //Recuperamos los datos de la tarea desde el payload
+      const { id, title, description } = action.payload;
+      //Buscamos la tarea en el state con base al id.
+      const foundTask = state.find((task) => task.id === id);
+      if (foundTask) {
+        foundTask.title = title;
+        foundTask.description = description;
+      }
+    },
   },
 });
 
-export const { addTask } = taskSlice.actions;
+export const { addTask, deleteTask, editTask } = taskSlice.actions;
 export default taskSlice.reducer;
